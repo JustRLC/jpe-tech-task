@@ -69,13 +69,12 @@ app.get("/api/releases", (req, res) => {
 });
 
 app.get("/api/config", (req, res) => {
-  res.json({
-    appName,
-    environment,
-    port,
-    debug: true
-  });
+  if (environment === "production") {
+    return res.status(404).json({ error: "Not found" });
+  }
+  res.json({ appName, environment });
 });
+
 
 if (require.main === module) {
   app.listen(port, () => {
